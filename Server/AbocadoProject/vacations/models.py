@@ -1,14 +1,19 @@
 from django.db import models
+import datetime
 
 class Vacation(models.Model):
     #User = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, null=True)
     start_date = models.DateField()
     end_date = models.DateField()
-
+    day = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    def calculateDay(self):
+        day = self.end_date - self.start_date + datetime.timedelta(days=1)
+        return day.days
 
 
 class Annual(models.Model):
