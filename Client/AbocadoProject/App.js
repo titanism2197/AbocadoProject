@@ -1,19 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, FlatList, ActivityIndicator, View, Image } from 'react-native';
+import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
+import { StackNavigator } from 'react-navigation';
+import { constants } from 'expo';
+import HomeScreen from './components/home';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+export default StackNavigator({
+    Home: { screen: HomeScreen,
+            navigationOptions: {
+                title: 'Home',
+                headerBackTitle: 'Back',
+            },
+          },
 });
