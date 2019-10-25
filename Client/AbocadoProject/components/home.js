@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
   }
 
   fetchDataFromApi = ()  => {
-    const url = "http://testabocado.ml:8000/vacations/list.json";
+    const url = "http://testabocado.ml:8000/vacations.json";
 
     this.setState({ loading: true });
 
@@ -78,24 +78,12 @@ export default class HomeScreen extends React.Component {
           data={this.state.data}
           renderItem={({ item }) => (
             <ListItem
-              onPress={() => this.props.navigation.navigate('Detail',
-              {name: `${item.name}`, menu: `${item.menu}`,
-              img: `${this.state.base_url}${item.photo}`,
-              address: `${item.address}`})}
-              avatar={<Avatar
-                      source={{uri: `${this.state.base_url}${item.photo}`}}
-                      onPress={() => console.log("Works!")}
-                      containerStyle={{marginBottom: 2}}
-                      avatarStyle={{resizeMode: "cover"}}
-                      width={140}
-                      height={130}
-                />}
-              title={`${item.name}`}
+              title={`${item.title}`}
               titleStyle={{ fontSize: 16}}
               titleContainerStyle = {{ marginLeft: 120 }}
               subtitle={<View style={styles.subtitleView}>
-            <Text style={styles.menuText}>{item.menu}</Text>
-            <Text style={styles.locText}>{item.address}</Text>
+            <Text style={styles.menuText}>{item.start_date}</Text>
+            <Text style={styles.menuText}>{item.end_date}</Text>
             </View>}
               containerStyle={{ borderBottomWidth: 0, marginBottom: 20 }}
             />
@@ -105,7 +93,6 @@ export default class HomeScreen extends React.Component {
           ListHeaderComponent={this.renderHeader}
           onRefresh={this.handleRefresh}
           refreshing={this.state.refreshing}
-
         />
       </List>
     );
@@ -129,17 +116,4 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: 'grey'
   },
-  locText: {
-    paddingLeft: 10,
-    color: 'grey',
-    marginTop: 6,
-    fontSize: 12
-  },
-  titleText: {
-    fontWeight: 'bold'
-  },
-  restaurantImage: {
-    width: 600,
-    height: 800
-  }
 });
