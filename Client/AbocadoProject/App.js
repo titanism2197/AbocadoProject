@@ -1,8 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, FlatList, ActivityIndicator, View, Image } from 'react-native';
-import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
-import { createStackNavigator, createAppContainer} from 'react-navigation-stack';
-import { constants } from 'expo';
+import React, { Component } from 'react';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator} from 'react-navigation-stack';
 import HomeScreen from './components/home';
 
 
@@ -15,8 +13,10 @@ const AppNavigator = createStackNavigator({
           },
 });
 
-export default class App extends React.Component {
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends Component {
   render() {
-    return <AppNavigator />;
+    return <AppContainer />;
   }
 }
