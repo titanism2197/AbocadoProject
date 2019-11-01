@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, FlatList } from 'react-native';
-import { List } from "react-native-elements";
-import { VacationItem } from './VacationItem';
+import { StyleSheet, FlatList, View } from 'react-native';
+import VacationItem from './VacationItem';
 
 export default class VacationList extends Component {
  constructor(props) {
@@ -51,16 +50,12 @@ export default class VacationList extends Component {
 
   render() {
     return (
-      <List>
+      <View>
         <FlatList
           data={this.state.data}
           renderItem={this._renderItem}
         />
-      </List>
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  
-});
