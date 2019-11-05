@@ -8,14 +8,11 @@ export default class VacationList extends Component {
     this.state  = {
       loading: false,
       data: [],
-      error: null,
-      refreshing: false,
     }
   }
 
   componentDidMount() {
     this.fetchDataFromApi();
-
   }
 
   fetchDataFromApi = ()  => {
@@ -26,27 +23,31 @@ export default class VacationList extends Component {
     fetch(url)
       .then(res => res.json())
       .then(res => {
-
+        console.log(res)
+        console.log(typeof(res.start_date))
         this.setState({
           data: res,
-          error: null,
-          loading: false,
-          refreshing: false
         });
-      })
-      .catch(error => {
-        this.setState({ error, loading : false });
       })
   };
 
   _renderItem = ({item}) => {
     return (
     <VacationItem 
-      days={item.days}
+      dday={this._getDday(item.start_date)}
+      days={item.day}
       start_date={item.start_date}
       end_date={item.end_date}
     />)
   };
+
+ _getDday = (start_date) => {
+   var now = new Date()
+   var dday = new Date(start_date)
+   var gap = now.getTime() - dday.getTime()
+   var result = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1
+   return result
+ };
 
   render() {
     return (
