@@ -17,14 +17,14 @@ class Vacation(models.Model):
 
 
 class Annual(models.Model):
-    vacation = models.ForeignKey(Vacation, on_delete=models.CASCADE)
+    vacation = models.ForeignKey(Vacation, related_name='annual', on_delete=models.CASCADE)
     day = models.IntegerField()
 
     def __str__(self):
         return "연가 : %d"   %self.day
 
 class Reward(models.Model): #보상
-    vacation = models.ForeignKey(Vacation, on_delete=models.CASCADE)
+    vacation = models.ForeignKey(Vacation, related_name='reward', on_delete=models.CASCADE)
     day = models.IntegerField()
     title = models.CharField(max_length=100, null=True)
 
@@ -32,7 +32,7 @@ class Reward(models.Model): #보상
         return "보상 %s : %d 일" %(self.title, self.day)
 
 class Consolation(models.Model): #위로
-    vacation = models.ForeignKey(Vacation, on_delete=models.CASCADE)
+    vacation = models.ForeignKey(Vacation, related_name='consolation', on_delete=models.CASCADE)
     day = models.IntegerField()
     title = models.CharField(max_length=100, null=True)
 
@@ -40,7 +40,7 @@ class Consolation(models.Model): #위로
         return "위로 %s : %d 일" %(self.title, self.day)
 
 class Prize(models.Model): #포상
-    vacation = models.ForeignKey(Vacation, on_delete=models.CASCADE)
+    vacation = models.ForeignKey(Vacation, related_name='prize', on_delete=models.CASCADE)
     day = models.IntegerField()
     title = models.CharField(max_length=100, null=True)
 
@@ -48,7 +48,7 @@ class Prize(models.Model): #포상
         return "포상 %s : %d 일" %(self.title, self.day)
 
 class Petition(models.Model):
-    vacation = models.ForeignKey(Vacation, on_delete=models.CASCADE)
+    vacation = models.ForeignKey(Vacation, related_name='petition', on_delete=models.CASCADE)
     day = models.IntegerField()
     title = models.CharField(max_length=100, null=True)
 
