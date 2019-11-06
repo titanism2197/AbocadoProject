@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from "react-native"
-import { Card } from 'react-native-elements'
+import { Card, Button } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import VacationDetail from './VacationDetail';
 
 export default class VacationItem extends Component {
   render() {
@@ -22,6 +24,18 @@ export default class VacationItem extends Component {
               <Text style={styles.text}>{this.props.end_date}</Text>
             </View>
           </View>
+          <View style={styles.btnContainer}>
+            <Button 
+              title="Detail"
+              buttonStyle={styles.detailBtn}
+            />
+          </View>
+          {
+            this.state.expanded &&
+            <VacationDetail 
+              key={this.props.key}
+            />
+          }
         </Card>
     )
   }
@@ -61,10 +75,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginHorizontal: 30,
-    paddingBottom: 5,
+    paddingBottom: 15,
   },
 
   text: {
     fontSize: 20,
   },
+  
+  btnContainer:{
+     flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+
+  detailBtn: {
+      width: 100,
+  }
 })

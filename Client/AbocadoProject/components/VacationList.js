@@ -37,6 +37,7 @@ export default class VacationList extends Component {
         days={item.day}
         start_date={item.start_date}
         end_date={item.end_date}
+        key={item.key}
       />)
     };
 
@@ -53,6 +54,7 @@ export default class VacationList extends Component {
           <FlatList
             data={this.state.data}
             renderItem={this._renderItem}
+            keyExtractor={item => item.pk}
             horizontal='true'
           />
       );
