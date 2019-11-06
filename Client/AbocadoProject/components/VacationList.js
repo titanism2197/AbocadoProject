@@ -24,7 +24,6 @@ export default class VacationList extends Component {
         .then(res => res.json())
         .then(res => {
           console.log(res)
-          console.log(typeof(res.start_date))
           this.setState({
             data: res,
           });
@@ -51,21 +50,12 @@ export default class VacationList extends Component {
 
     render() {
       return (
-        <View style={styles.container}>
           <FlatList
             data={this.state.data}
             renderItem={this._renderItem}
             horizontal='true'
           />
-        </View>
       );
     }
   }
 
-const styles = StyleSheet.create({
-  container:{
-    alignItems: 'center',
-    height: 225,
-    marginTop: 50,
-  },
-})
