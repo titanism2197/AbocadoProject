@@ -11,37 +11,33 @@ export default class VacationList extends Component {
       }
     }
 
-    componentDidMount() {
-      this.fetchDataFromApi();
-    }
+  componentDidMount() {
+    this.fetchDataFromApi();
+  }
 
-    fetchDataFromApi = ()  => {
-      const url = "http://testabocado.ml:8000/vacations/";
+  fetchDataFromApi = ()  => {
+    const url = "http://testabocado.ml:8000/vacations/";
 
-      this.setState({ loading: true });
+    this.setState({ loading: true });
 
-      fetch(url)
-        .then(res => res.json())
-        .then(res => {
-          console.log(res)
+    fetch(url)
+    .then(res => res.json())
+    .then(res => {
           this.setState({
             data: res,
           });
         })
     };
 
-    _renderItem = ({item}) => {
-      return (
-      <VacationItem 
-        dday={this._getDday(item.start_date)}
-        days={item.day}
-        start_date={item.start_date}
-        end_date={item.end_date}
-        key={item.key}
-      />)
-    };
+  _renderItem = ({item}) => {
+    return (
+    <VacationItem 
+    dday={this._getDday(item.start_date)}
+    item={item}
+    />)
+  };
 
-  _getDday = (start_date) => {
+  _getDday = (start_date) => { //휴가출발까지 남은 날짜 계산
     var now = new Date()
     var dday = new Date(start_date)
     var gap = now.getTime() - dday.getTime()
@@ -49,15 +45,15 @@ export default class VacationList extends Component {
     return result
   };
 
-    render() {
-      return (
-          <FlatList
-            data={this.state.data}
-            renderItem={this._renderItem}
-            keyExtractor={item => item.pk}
-            horizontal='true'
-          />
-      );
-    }
+  render() {
+    return (
+        <FlatList
+          data={this.state.data}
+          renderItem={this._renderItem}
+          keyExtractor={(item, index) => item.id}
+          horizontal='true'
+        />
+    );
   }
+}
 
