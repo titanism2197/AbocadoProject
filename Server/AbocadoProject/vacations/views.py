@@ -12,7 +12,7 @@ def vacation_list(request):
     List all code vacations, or create a new vacation.
     """
     if request.method == 'GET':
-        vacations = Vacation.objects.all()
+        vacations = Vacation.objects.order_by('start_date')
         serializer = VacationSerializer(vacations, many=True)
         return JsonResponse(serializer.data, safe=False)
 
