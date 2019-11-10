@@ -19,6 +19,13 @@ export default class VacationItem extends Component {
   };
 
   render() {
+    let dDay = []
+    if(this.props.dday<0) {
+      let dday = this.props.dday * -1
+      dDay.push(<Text style={styles.content}>D+{dday}</Text>)
+    }
+    else dDay.push(<Text style={styles.content}>D-{this.props.dday}</Text>)
+
     return (
         <View>
           <Card containerStyle={styles.container} wrapperStyle={{padding:0}}>
@@ -26,7 +33,7 @@ export default class VacationItem extends Component {
               <Text style={styles.content}>{this.props.item.day} 일</Text>
             </View>
             <View style={styles.dday}>
-              <Text style={styles.content}>D-{this.props.dday}</Text>
+              {dDay}
             </View>
             <View style={styles.info}>
               <View style={styles.date}>
