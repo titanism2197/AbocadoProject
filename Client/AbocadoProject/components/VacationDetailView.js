@@ -6,11 +6,17 @@ import { Card } from 'react-native-elements'
 export default class VacationDetailView extends Component {
   constructor(props) {
     super(props);
-    this.state  = {
-      consolation: 0,
-    }
+    this.state = {
+        data : {
+          annual : 0,
+           
+        },
+      };
   }
   
+  /**************************************************************************/
+  /* function which output detail */
+
   _getAnnual = () => { // Annual TextInput, 값 없으면 에러 안나게. 
     let annual = []
     if(this.props.item.annual.length!=0) {
@@ -53,27 +59,76 @@ export default class VacationDetailView extends Component {
     return consolation
   }
 
-  render() {
+  _getPrize = () => {  // Prize TextInput
     let prize = []
-    let reward = []
-    let petition = []
-
     for(let i=0; i<this.props.item.prize.length; i++) {
-      prize.push(
-        <Text style={styles.detail}>{this.props.item.prize[i].title} : {this.props.item.prize[i].day} 일</Text>  
+        prize.push( 
+          <View style={styles.detailContainer}>
+            <TextInput  
+              placeholder={this.props.item.prize[i].day + '일'}
+              placeholderTextColor='black'
+              underlineColorAndroid='transparent'  
+              style={[styles.textInput, styles.dayInput]} 
+              keyboardType={'numeric'}/>
+            <TextInput  
+              placeholder={this.props.item.prize[i].title}
+              placeholderTextColor='black'
+              underlineColorAndroid='transparent'  
+              style={[styles.textInput, styles.titleInput]}/>
+          </View> 
       )
     }
-    for(let i=0; i<this.props.item.reward.length; i++) {
-      reward.push(
-        <Text style={styles.detail}>{this.props.item.reward[i].title} : {this.props.item.reward[i].day} 일</Text>  
-      )
-    }
-    for(let i=0; i<this.props.item.petition.length; i++) {
-      petition.push(
-        <Text style={styles.detail}>{this.props.item.petition[i].title} : {this.props.item.petition[i].day} 일</Text>  
-      )
-    }
+    return prize
+  }
 
+  _getReward = () => {  // Prize TextInput
+    let reward = []
+    for(let i=0; i<this.props.item.reward.length; i++) {
+        reward.push( 
+          <View style={styles.detailContainer}>
+            <TextInput  
+              placeholder={this.props.item.reward[i].day + '일'}
+              placeholderTextColor='black'
+              underlineColorAndroid='transparent'  
+              style={[styles.textInput, styles.dayInput]} 
+              keyboardType={'numeric'}/>
+            <TextInput  
+              placeholder={this.props.item.reward[i].title}
+              placeholderTextColor='black'
+              underlineColorAndroid='transparent'  
+              style={[styles.textInput, styles.titleInput]}/>
+          </View> 
+      )
+    }
+    return reward
+  }
+
+  _getPetition = () => {  // Prize TextInput
+    let petition = []
+    for(let i=0; i<this.props.item.petition.length; i++) {
+        petition.push( 
+          <View style={styles.detailContainer}>
+            <TextInput  
+              placeholder={this.props.item.petition[i].day + '일'}
+              placeholderTextColor='black'
+              underlineColorAndroid='transparent'  
+              style={[styles.textInput, styles.dayInput]} 
+              keyboardType={'numeric'}/>
+            <TextInput  
+              placeholder={this.props.item.petition[i].title}
+              placeholderTextColor='black'
+              underlineColorAndroid='transparent'  
+              style={[styles.textInput, styles.titleInput]}/>
+          </View> 
+      )
+    }
+    return petition
+  }
+
+/**************************************************************************/
+
+
+  render() {
     return ( //DetailView flatlist로 구현하기
       <Card containerStyle={styles.container}>
         <View style={styles.category}>
@@ -86,15 +141,15 @@ export default class VacationDetailView extends Component {
         </View>
         <View style={styles.category}>
           <Text style={styles.title}>포상휴가</Text>
-          <View>{prize}</View>
+          <View>{this._getPrize()}</View>
         </View>
         <View style={styles.category}>
           <Text style={styles.title}>보상휴가</Text>
-          <View>{reward}</View>
+          <View>{this._getReward()}</View>
         </View>
         <View style={styles.category}>
           <Text style={styles.title}>청원휴가</Text>
-          <View>{petition}</View>
+          <View>{this._getPetition()}</View>
         </View>
       </Card>
     )
@@ -123,10 +178,6 @@ const styles = StyleSheet.create({
   },
   detailContainer:{
     flexDirection: 'row',
-  },
-  detail: {
-    fontSize: 15,
-    paddingBottom: 7,
   },
   textInput: {
     textAlign: 'center',

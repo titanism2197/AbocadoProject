@@ -14,7 +14,8 @@ class ListingField(serializers.RelatedField):
     def to_representation(self, value):
         data = {
             "day": value.day,
-            "title": value.title
+            "title": value.title,
+            "id": value.pk
         }
         return data
         
@@ -24,6 +25,7 @@ class VacationSerializer(serializers.ModelSerializer):
     consolation = ListingField(many=True, read_only=True)
     prize = ListingField(many=True, read_only=True)
     petition = ListingField(many=True, read_only=True)
+
     class Meta:
         model = Vacation
         fields = ['id', 'title', 'start_date', 'end_date', 'day', 'annual', 'reward', 'consolation', 'prize', 'petition']
