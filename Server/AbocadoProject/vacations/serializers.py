@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from vacations.models import Vacation
-
+from vacations.models import Annual
+from vacations.models import Detail
 
 
 class AnnualListingField(serializers.RelatedField):
@@ -26,3 +27,42 @@ class VacationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vacation
         fields = ['id', 'title', 'start_date', 'end_date', 'day', 'annual', 'detail']
+
+    def create(self, validated_data):
+        return Vacation.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.start_date = validated_data.get('start_date', instance.start_date)
+        instance.end_date = validated_data.get('end_date', instance.end_date)
+        instance.day = validated_data.get('day', instance.day)
+        instance.save()
+        return instance
+
+
+class AnnualSerializer(serializers.ModelSerializer):
+    annual = AnnualListingField(many=True, read_only=True)
+
+    class Meta:
+        model = Annual
+        fields = ['id', 'day']
+
+    def update(self, instance, validated_data):
+        instance.day = validated_data.get('day', instance.day)
+        instance.save()
+        return instance
+
+
+class DetailSerializer(serializers.ModelSerializer):
+    detail = DetailField(many=True, read_only=True)
+
+    class Meta:
+        model = Detail
+        fields = ['id', 'day', 'title', 'type_of_detail']
+
+    def update(self, instance, validated_data):
+        instance.day = validated_data.get('day', instance.day)
+        instance.title = validated_data.get('title', instance.title)
+        instance.type_of_detail = validated_data.get('type_of_detail', instance.type_of_detail)
+        instance.save()
+        return instance
