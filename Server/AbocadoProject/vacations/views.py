@@ -57,7 +57,7 @@ def vacation_detail(request, pk):
 
 
 @csrf_exempt
-def annual_edit(request, pk):
+def edit_annual(request, pk):
     try:
         annual = Annual.objects.get(pk=pk)
     except Annual.DoesNotExist:
@@ -67,9 +67,9 @@ def annual_edit(request, pk):
         serializer = AnnualSerializer(annual)
         return JsonResponse(serializer.data)
 
-    else request.method == 'PUT':
+    elif request.method == 'PUT':
         data = JSONParser().parse(request)
-        serializer = AnnualSerializer(annual, data=data)
+        serializer = AnnualSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
@@ -77,7 +77,7 @@ def annual_edit(request, pk):
 
 
 @csrf_exempt
-def detail_edit(request, pk):
+def edit_detail(request, pk):
     try:
         detail = Detail.objects.get(pk=pk)
     except Detail.DoesNotExist:
@@ -87,9 +87,9 @@ def detail_edit(request, pk):
         serializer = DetailSerializer(detail)
         return JsonResponse(serializer.data)
 
-    else request.method == 'PUT':
+    elif request.method == 'PUT':
         data = JSONParser().parse(request)
-        serializer = DetailSerializer(detail, data=data)
+        serializer = DetailSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)

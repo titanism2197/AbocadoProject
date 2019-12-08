@@ -8,6 +8,7 @@ class AnnualListingField(serializers.RelatedField):
     def to_representation(self, value):
         data = {
             "day": value.day,
+            "id": value.pk,
         }
         return data
 
@@ -19,7 +20,8 @@ class DetailField(serializers.RelatedField):
             "id": value.pk
         }
         return data
-        
+
+ #### VacationSerailizer #####       
 class VacationSerializer(serializers.ModelSerializer):
     annual = AnnualListingField(many=True, read_only=True)
     detail = DetailField(many=True, read_only=True)
@@ -40,9 +42,8 @@ class VacationSerializer(serializers.ModelSerializer):
         return instance
 
 
+#### AnnualSerializer ##### 
 class AnnualSerializer(serializers.ModelSerializer):
-    annual = AnnualListingField(many=True, read_only=True)
-
     class Meta:
         model = Annual
         fields = ['id', 'day']
@@ -53,9 +54,8 @@ class AnnualSerializer(serializers.ModelSerializer):
         return instance
 
 
+#### DetailSerializer #####
 class DetailSerializer(serializers.ModelSerializer):
-    detail = DetailField(many=True, read_only=True)
-
     class Meta:
         model = Detail
         fields = ['id', 'day', 'title', 'type_of_detail']
