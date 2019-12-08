@@ -6,11 +6,11 @@ from vacations.models import Vacation
 class AnnualListingField(serializers.RelatedField):
     def to_representation(self, value):
         data = {
-            "day": value.day
+            "day": value.day,
         }
         return data
 
-class ListingField(serializers.RelatedField):
+class DetailField(serializers.RelatedField):
     def to_representation(self, value):
         data = {
             "day": value.day,
@@ -21,11 +21,8 @@ class ListingField(serializers.RelatedField):
         
 class VacationSerializer(serializers.ModelSerializer):
     annual = AnnualListingField(many=True, read_only=True)
-    reward = ListingField(many=True, read_only=True)
-    consolation = ListingField(many=True, read_only=True)
-    prize = ListingField(many=True, read_only=True)
-    petition = ListingField(many=True, read_only=True)
+    detail = DetailField(many=True, read_only=True)
 
     class Meta:
         model = Vacation
-        fields = ['id', 'title', 'start_date', 'end_date', 'day', 'annual', 'reward', 'consolation', 'prize', 'petition']
+        fields = ['id', 'title', 'start_date', 'end_date', 'day', 'annual', 'detail']
