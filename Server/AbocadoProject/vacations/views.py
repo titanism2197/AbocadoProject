@@ -83,7 +83,7 @@ class AnnualDetail(APIView):
 
 class DetailList(APIView):
 
-    def get(self, request, format=None):
+    def get(self, request, pk, format=None):
         vacation = Vacation.objects.get(pk=pk)
         details = Detail.objects.get(vacation=vacation)
         serializer = DetailSerializer(details, many=True)
