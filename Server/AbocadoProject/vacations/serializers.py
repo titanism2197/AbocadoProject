@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from vacations.models import Vacation
-from vacations.models import Annual
-from vacations.models import Detail
+from vacations.models import Vacation, Annual, Detail
 
 
 class AnnualListingField(serializers.RelatedField):
@@ -47,6 +45,9 @@ class AnnualSerializer(serializers.ModelSerializer):
     class Meta:
         model = Annual
         fields = ['id', 'day']
+    
+    def create(self, validated_data):
+        return Annual.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.day = validated_data.get('day', instance.day)
@@ -59,6 +60,9 @@ class DetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detail
         fields = ['id', 'day', 'title', 'type_of_detail']
+
+    def create(self, validated_data):
+        return Detail.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.day = validated_data.get('day', instance.day)

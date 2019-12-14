@@ -1,9 +1,12 @@
 from django.urls import path
-from vacations import views
+from rest_framework.urlpatterns import format_suffix_patterns
+from vacations.views import VacationList, VacationDetail, AnnualDetail, DetailDetail
 
 urlpatterns = [
-    path('vacations/', views.vacation_list),
-    path('vacations/<int:pk>/', views.vacation_detail),
-    path('vacations/edit_annual/<int:pk>/', views.edit_annual),
-    path('vacations/edit_detail/<int:pk>', views.edit_detail),
+    path('vacations/', VacationList.as_view()),
+    path('vacations/<int:pk>/', VacationDetail.as_view()),
+    path('vacations/annual/<int:pk>/', AnnualDetail.as_view()),
+    path('vacations/detail/<int:pk>', DetailDetail.as_view()),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

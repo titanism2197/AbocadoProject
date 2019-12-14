@@ -1,96 +1,108 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from vacations.models import Vacation
-from vacations.models import Annual
-from vacations.models import Detail
-from vacations.serializers import VacationSerializer
-from vacations.serializers import AnnualSerializer
-from vacations.serializers import DetailSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from vacations.models import Vacation, Annual, Detail
+from vacations.serializers import VacationSerializer, AnnualSerializer, DetailSerializer
 
-
-@csrf_exempt
-def vacation_list(request):
+class VacationList(APIView):
     """
-    List all code vacations, or create a new vacation.
+    List all snippets, or create a new snippet.
     """
-    if request.method == 'GET':
+    def get(self, request, format=None):
         vacations = Vacation.objects.order_by('start_date')
         serializer = VacationSerializer(vacations, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = VacationSerializer(data=data)
+    def post(self, request, format=None):
+        serializer = VacationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
-def vacation_detail(request, pk):
+class VacationDetail(APIView):
     """
-    Retrieve, update or delete a code snippet.
+    Retrieve, update or delete a snippet instance.
     """
-    try:
-        vacation = Vacation.objects.get(pk=pk)
-    except Vacation.DoesNotExist:
-        return HttpResponse(status=404)
+    def get_object(self, pk):
+        try:
+            return Vacation.objects.get(pk=pk)
+        except Vacation.DoesNotExist:
+            raise Http404
 
-    if request.method == 'GET':
+    def get(self, request, pk, format=None):
+        vacation = self.get_object(pk)
         serializer = VacationSerializer(vacation)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = VacationSerializer(vacation, data=data)
+    def put(self, request, pk, format=None):
+        vacation = self.get_object(pk)
+        serializer = VacationSerializer(vacation, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, pk, format=None):
+        vacation = self.get_object(pk)
         vacation.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@csrf_exempt
-def edit_annual(request, pk):
-    try:
-        annual = Annual.objects.get(pk=pk)
-    except Annual.DoesNotExist:
-        return HttpResponse(status=404)
+class AnnualDetail(APIView):
 
-    if request.method == 'GET':
+    def get_object(self, pk):
+        try:
+            return Annual.objects.get(pk=pk)
+        except Annual.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        annual = self.get_object(pk)
         serializer = AnnualSerializer(annual)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = AnnualSerializer(data=data)
+    def put(self, request, pk, format=None):
+        annual = self.get_object(pk)
+        serializer = AnnualSerializer(annual, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        annual = self.get_object(pk)
+        annual.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@csrf_exempt
-def edit_detail(request, pk):
-    try:
-        detail = Detail.objects.get(pk=pk)
-    except Detail.DoesNotExist:
-        return HttpResponse(status=404)
+class DetailDetail(APIView):
 
-    if request.method == 'GET':
+    def get_object(self, pk):
+        try:
+            return Detail.objects.get(pk=pk)
+        except Detail.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        detail = self.get_object(pk)
         serializer = DetailSerializer(detail)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = DetailSerializer(data=data)
+    def put(self, request, pk, format=None):
+        detail = self.get_object(pk)
+        serializer = DetailSerializer(detail, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        detail = self.get_object(pk)
+        detail.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
