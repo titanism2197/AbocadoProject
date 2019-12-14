@@ -3,9 +3,9 @@ import datetime
 
 class Vacation(models.Model):
     #User = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100, null=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    title = models.CharField(max_length=100, null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     day = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
@@ -16,20 +16,15 @@ class Vacation(models.Model):
         return day.days
 
 
-class Annual(models.Model):
-    vacation = models.ForeignKey(Vacation, related_name='annual', on_delete=models.CASCADE)
-    day = models.IntegerField()
-
-    def __str__(self):
-        return "연가 : %d"   %self.day
-
-
 class Detail(models.Model):
+    ANNUAL = 'ANN'
     CONSOLATION = 'CON'
     PRIZE = 'PR'
     REWARD = 'RE'
     PETITION = 'PE'
+
     TYPE_OF_DETAIL_CHOICES = [
+        (ANNUAL, '연가'),
         (CONSOLATION, '위로'),
         (PRIZE, '포상'),
         (REWARD, '보상'),
@@ -39,46 +34,11 @@ class Detail(models.Model):
     type_of_detail = models.CharField(
         max_length=10,
         choices=TYPE_OF_DETAIL_CHOICES,
-        default=CONSOLATION,
+        default=ANNUAL,
     )
     vacation = models.ForeignKey(Vacation, related_name='detail', on_delete=models.CASCADE)
-    day = models.IntegerField()
-    title = models.CharField(max_length=100, null=True)
+    day = models.IntegerField(null=True, default=0)
+    title = models.CharField(max_length=100, null=True, blank=True)
     
     def __str__(self):
         return "%s %s : %d 일" %(self.type_of_detail, self.title, self.day)
-
-
-'''
-class Reward(models.Model): #보상
-    vacation = models.ForeignKey(Vacation, related_name='reward', on_delete=models.CASCADE)
-    day = models.IntegerField()
-    title = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return "보상 %s : %d 일" %(self.title, self.day)
-
-class Consolation(models.Model): #위로
-    vacation = models.ForeignKey(Vacation, related_name='consolation', on_delete=models.CASCADE)
-    day = models.IntegerField()
-    title = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return "위로 %s : %d 일" %(self.title, self.day)
-
-class Prize(models.Model): #포상
-    vacation = models.ForeignKey(Vacation, related_name='prize', on_delete=models.CASCADE)
-    day = models.IntegerField()
-    title = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return "포상 %s : %d 일" %(self.title, self.day)
-
-class Petition(models.Model):
-    vacation = models.ForeignKey(Vacation, related_name='petition', on_delete=models.CASCADE)
-    day = models.IntegerField()
-    title = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return "청원 %s : %d 일" %(self.title, self.day)
-'''
