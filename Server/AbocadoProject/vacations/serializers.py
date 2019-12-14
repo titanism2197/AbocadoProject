@@ -29,7 +29,9 @@ class VacationSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'start_date', 'end_date', 'day', 'annual', 'detail']
 
     def create(self, validated_data):
-        return Vacation.objects.create(**validated_data)
+        vacation = Vacation.objects.create(**validated_data)
+        ann_obj, create = Annual.objects.get_or_create(vacation=vacation, defaults={'day': 0})
+        return vacation
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
@@ -45,9 +47,6 @@ class AnnualSerializer(serializers.ModelSerializer):
     class Meta:
         model = Annual
         fields = ['id', 'day']
-    
-    def create(self, validated_data):
-        return Annual.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.day = validated_data.get('day', instance.day)
@@ -59,11 +58,14 @@ class AnnualSerializer(serializers.ModelSerializer):
 class DetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detail
-        fields = ['id', 'day', 'title', 'type_of_detail']
+        fields = ['vacation', 'id', 'day', 'title', 'type_of_detail']
 
+    '''
     def create(self, validated_data):
-        return Detail.objects.create(**validated_data)
-
+        vacation = Vacation.objects.get(vacation=validated_data['vacation'])
+        det_obj, create = Detail.objects.get_or_create(vacation=vacation, defaults={'day': 0, 'title': '', 'type_of_detail': '',})  
+        return det_obj
+    '''
     def update(self, instance, validated_data):
         instance.day = validated_data.get('day', instance.day)
         instance.title = validated_data.get('title', instance.title)

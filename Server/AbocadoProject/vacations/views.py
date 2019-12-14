@@ -10,7 +10,7 @@ from vacations.serializers import VacationSerializer, AnnualSerializer, DetailSe
 
 class VacationList(APIView):
     """
-    List all snippets, or create a new snippet.
+    List all Vacation, add Vacation
     """
     def get(self, request, format=None):
         vacations = Vacation.objects.order_by('start_date')
@@ -27,7 +27,7 @@ class VacationList(APIView):
 
 class VacationDetail(APIView):
     """
-    Retrieve, update or delete a snippet instance.
+    Retrieve, update or delete a vacation instance.
     """
     def get_object(self, pk):
         try:
@@ -40,7 +40,7 @@ class VacationDetail(APIView):
         serializer = VacationSerializer(vacation)
         return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
+    def put(self, request, pk, format=None): #edit vacation
         vacation = self.get_object(pk)
         serializer = VacationSerializer(vacation, data=request.data)
         if serializer.is_valid():
@@ -81,28 +81,18 @@ class AnnualDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class DetailDetail(APIView):
+class DetailList(APIView):
 
-    def get_object(self, pk):
-        try:
-            return Detail.objects.get(pk=pk)
-        except Detail.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk, format=None):
-        detail = self.get_object(pk)
-        serializer = DetailSerializer(detail)
+    def get(self, request, format=None):
+        vacation = Vacation.objects.get(pk=pk)
+        details = Detail.objects.get(vacation=vacation)
+        serializer = DetailSerializer(details, many=True)
         return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
-        detail = self.get_object(pk)
-        serializer = DetailSerializer(detail, data=request.data)
+    def post(self, request, format=None):
+        serializer = DetailSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
-        detail = self.get_object(pk)
-        detail.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
