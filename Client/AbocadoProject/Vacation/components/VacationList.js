@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, View } from 'react-native';
+import { StyleSheet, FlatList, View, Button } from 'react-native';
 import VacationItem from './VacationItem';
 
 export default class VacationList extends Component {
@@ -26,8 +26,12 @@ export default class VacationList extends Component {
           this.setState({
             data: res,
           });
-        })
-    };
+          console.log(this.state.data)
+    })
+    .catch((error) => {
+          console.log(error);
+    });
+  };
 
   _renderItem = ({item}) => {
     return (
@@ -45,13 +49,23 @@ export default class VacationList extends Component {
     return result
   };
 
+  _renderListHeader = () => {
+    return(
+      <View style={{flex:1, flexDirection: "row", alignContent: "flex-end"}}>
+        <Button title="+"/>
+      </View>
+    )
+  }
+
   render() {
     return (
         <FlatList
           data={this.state.data}
           renderItem={this._renderItem}
           keyExtractor={(item, index) => item.id}
-          horizontal='true'
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
         />
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Button, ScrollView, Dimensions } from 'react-native';
 import VacationList from './Vacation/components/VacationList';
 
 
@@ -22,11 +22,17 @@ export default class HomeScreen extends Component {
           style={{ flex: 1 }}
           contentContainerStyle={{ flexGrow: 1}}
           scrollEnabled={scrollEnabled}
-          onContentSizeChange={this.onContentSizeChange}>
+          onContentSizeChange={this.onContentSizeChange}
+          showsVerticalScrollIndicator={false}>
           <View style={styles.nothing}>
             <Text>This is HomeScreen.</Text>
           </View>
-          <VacationList style={styles.vacationList}/>
+          <View style={styles.vacationList}>
+            <View style={styles.listHeader}>
+              <Button title="+"/>
+            </View>
+            <VacationList/>
+          </View>
         </ScrollView>
       </View>
     )
@@ -39,7 +45,14 @@ const styles = StyleSheet.create({
   vacationList: {
     flex: 1,
   },
+
+  listHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 50,
+  },
+
   nothing: {
-    flex: 4,
+    flex: 8,
   },
 })

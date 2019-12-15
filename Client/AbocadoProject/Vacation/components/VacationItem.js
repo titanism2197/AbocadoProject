@@ -53,12 +53,6 @@ export default class VacationItem extends Component {
               />
             </View>
           </Card>
-          {
-            this.state.expanded &&
-            <VacationDetailView
-              item={this.props.item}
-            />
-          }
         </View>
     )
   }
@@ -73,8 +67,9 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderColor: 'gray',
     borderRadius: 15,
+    marginRight: 3,
   },
-  
+
   day:{
     alignItems: 'center',
     paddingBottom: 10,
@@ -86,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    fontSize: 30,
+    fontSize: 25,
   },
 
   info: {
