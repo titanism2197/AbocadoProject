@@ -29,8 +29,8 @@ class VacationInfoList(APIView):
     List VacationInfo
     """
     def get(self, request, format=None):  #휴가요약 데이터 가져오기
-        vacationInfo = VacationInfo.objects.all()[0]
-        serializer = VacationInfoSerializer(vacationInfo, many=True)
+        vacationInfo = VacationInfo.objects.all()[0] #filter 해당 user로 교체
+        serializer = VacationInfoSerializer(vacationInfo)
         return Response(serializer.data)
 
 class VacationDetail(APIView):
@@ -105,7 +105,7 @@ class DetailDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 def updateInfo():
-    info = VacationInfo.objects.all()
+    info = VacationInfo.objects.all() #filter 해당 user로 교체
     info = info[0]
     info.total = info.calculateTotal()
     info.gone = info.calculateGone()

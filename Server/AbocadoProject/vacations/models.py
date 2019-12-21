@@ -12,9 +12,9 @@ class Vacation(models.Model):
 
     def checkIsGone(self):
         if datetime.date.today() > self.start_date:
-            self.is_gone = True
+            return True
         else:
-            self.is_gone = False
+            return False
 
     def __str__(self):
         return self.title
