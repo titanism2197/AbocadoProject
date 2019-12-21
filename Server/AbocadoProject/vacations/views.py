@@ -5,8 +5,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from vacations.models import Vacation, Detail
-from vacations.serializers import VacationSerializer, DetailSerializer
+from vacations.models import Vacation, Detail, VacationInfo
+from vacations.serializers import VacationSerializer, DetailSerializer, VacationInfoSerializer
 
 class VacationList(APIView):
     """
@@ -20,8 +20,18 @@ class VacationList(APIView):
     def post(self, request, format=None): # + btn -> 새로운 휴가 추가하기
         if(request.data["addPressed"]==1):
             vacation = Vacation.objects.create()
+            updateInfo()
             serializer = VacationSerializer(vacation)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class VacationInfoList(APIView):
+    """
+    List VacationInfo
+    """
+    def get(self, request, format=None):  #휴가요약 데이터 가져오기
+        vacationInfo = VacationInfo.objects.all()[0]
+        serializer = VacationInfoSerializer(vacationInfo, many=True)
+        return Response(serializer.data)
 
 class VacationDetail(APIView):
     """
@@ -43,12 +53,14 @@ class VacationDetail(APIView):
         serializer = VacationSerializer(vacation, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            updateInfo()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None): #휴가 데이터 지우기
         vacation = self.get_object(pk)
         vacation.delete()
+        updateInfo()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -91,3 +103,11 @@ class DetailDetail(APIView):
         detail = self.get_object(pk)
         detail.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+def updateInfo():
+    info = VacationInfo.objects.all()
+    info = info[0]
+    info.total = info.calculateTotal()
+    info.gone = info.calculateGone()
+    info.left = info.total - info.gone
+    info.save()

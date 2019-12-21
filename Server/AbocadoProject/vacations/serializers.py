@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from vacations.models import Vacation, Detail
+from vacations.models import Vacation, Detail, VacationInfo
 
 class DetailField(serializers.RelatedField):
     def to_representation(self, value):
@@ -10,19 +10,20 @@ class DetailField(serializers.RelatedField):
         }
         return data
 
- #### VacationSerailizer #####       
+#### VacationSerailizer #####       
 class VacationSerializer(serializers.ModelSerializer):
     detail = DetailField(many=True, read_only=True)
 
     class Meta:
         model = Vacation
-        fields = ['id', 'title', 'start_date', 'end_date', 'day', 'detail']
+        fields = ['id', 'title', 'start_date', 'end_date', 'day', 'detail', 'is_gone']
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.end_date = validated_data.get('end_date', instance.end_date)
         instance.day = validated_data.get('day', instance.day)
+        instance.is_gone = instance.checkIsGone()
         instance.save()
         return instance
 
@@ -39,3 +40,9 @@ class DetailSerializer(serializers.ModelSerializer):
         instance.type_of_detail = validated_data.get('type_of_detail', instance.type_of_detail)
         instance.save()
         return instance
+
+
+class VacationInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VacationInfo
+        fields = ['id', 'total', 'gone', 'left']
