@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, FlatList, View, Text} from 'react-native';
 import { Card, Button } from 'react-native-elements'
 
-export default class VacationList extends Component {
+export default class VacationInfo extends Component {
   constructor(props) {
       super(props);
       this.state  = {
@@ -41,21 +41,21 @@ export default class VacationList extends Component {
             <Text style={[styles.content, styles.text]}>{this.state.data.total} 일</Text>
         </Card>
         <View style={styles.column2}>
-          <View style={styles.row}>
-            <Card containerStyle={styles.card}>
+          <View style={styles.row1}>
+            <Card containerStyle={styles.card1}>
               <View>
                 <Text style={[styles.title, styles.text]}>나간 휴가</Text>
                 <Text style={[styles.detail, styles.text]}>{this.state.data.gone} 일</Text>
               </View>
             </Card>
-            <Card containerStyle={styles.card}>
+            <Card containerStyle={styles.card1}>
               <View>
                 <Text style={[styles.title, styles.text]}>남은 휴가</Text>
                 <Text style={[styles.detail, styles.text]}>{this.state.data.left} 일</Text>
               </View>
             </Card>
           </View>
-          <Card containerStyle={[styles.card, styles.row]}>
+          <Card containerStyle={[styles.card2, styles.row2]}>
               <View>
                 <Text style={[styles.title, styles.text]}>나간 휴가</Text>
                 <Text style={[styles.detail, styles.text]}>{this.state.data.gone} 일</Text>
@@ -71,10 +71,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    marginHorizontal: 20,
+    marginHorizontal: 30,
   },
-  card: {
+  card1: {
     marginHorizontal: 0,
+  },
+  card2: {
+    marginHorizontal: 0,
+    marginVertical: 7,
   },
   column1: {
     flex: 1,
@@ -85,17 +89,20 @@ const styles = StyleSheet.create({
   column2: {
     flex: 3,
     flexDirection: 'column',
-    justifyContent: 'space-between',
   },
-  row: {
+  row1: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+  },
+  row2: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   text: {
     textAlign: 'center',
   },
   title: {
-    fontSize: 17,
+    fontSize: 15,
   },
   content: {
     fontSize: 27,

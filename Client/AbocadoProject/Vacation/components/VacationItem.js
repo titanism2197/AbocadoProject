@@ -45,13 +45,6 @@ export default class VacationItem extends Component {
                 <Text style={styles.text}>{this.props.item.end_date}</Text>
               </View>
             </View>
-            <View style={styles.btnContainer}>
-              <Button 
-                title="Detail"
-                buttonStyle={styles.detailBtn}
-                onPress={this._btnPressed}
-              />
-            </View>
           </Card>
         </View>
     )
@@ -61,6 +54,7 @@ export default class VacationItem extends Component {
 const styles = StyleSheet.create({
   container: {
     padding: 0,
+    width: 310,
     flexDirection: 'column',
     justifyContent: 'space-around',
     backgroundColor: 'white',
@@ -97,15 +91,6 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 20,
+    fontSize: 17,
   },
-  
-  btnContainer:{
-     flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-
-  detailBtn: {
-      width: 100,
-  }
 })

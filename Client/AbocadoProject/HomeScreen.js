@@ -2,28 +2,16 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, ScrollView, Dimensions } from 'react-native';
 import VacationList from './Vacation/components/VacationList';
 import VacationInfo from './Vacation/components/VacationInfo';
+import VacationType from './Vacation/components/VacationType';
 
-
-const { height } = Dimensions.get('window');
 
 export default class HomeScreen extends Component {
-  state = {
-    screenHeight: height,
-  };
-
-  onContentSizeChange = (contentWidth, contentHeight) => {
-    this.setState({ screenHeight: contentHeight });
-  };
-  
   render() {
-    const scrollEnabled = this.state.screenHeight > height;
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{ flexGrow: 1}}
-          scrollEnabled={scrollEnabled}
-          onContentSizeChange={this.onContentSizeChange}
           showsVerticalScrollIndicator={false}>
           <View style={styles.vacationInfo}>
             <VacationInfo/>
@@ -33,6 +21,9 @@ export default class HomeScreen extends Component {
               <Button title="+"/>
             </View>
             <VacationList/>
+          </View>
+          <View style={styles.vacationType}>
+            <VacationType/>
           </View>
         </ScrollView>
       </View>
@@ -44,7 +35,7 @@ export default class HomeScreen extends Component {
 
 const styles = StyleSheet.create({
   vacationList: {
-    flex: 3,
+    flex: 1,
   },
 
   listHeader: {
@@ -54,6 +45,11 @@ const styles = StyleSheet.create({
   },
 
   vacationInfo: {
-    height: 190,
+    height: 180,
+    marginBottom: 20,
+  },
+
+  vacationType: { 
+    height: 180,
   },
 })

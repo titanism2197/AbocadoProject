@@ -65,7 +65,7 @@ export default class VacationList extends Component {
           keyExtractor={(item, index) => item.id}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
+          contentContainerStyle={{ paddingLeft: 0, paddingRight: 0 }}
         />
     );
   }
