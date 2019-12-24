@@ -4,15 +4,27 @@ import VacationList from './Vacation/components/VacationList';
 import VacationInfo from './Vacation/components/VacationInfo';
 import VacationType from './Vacation/components/VacationType';
 
-
+const { height } = Dimensions.get('window');
 export default class HomeScreen extends Component {
+  state = {
+    screenHeight: height,
+  };
+
+  onContentSizeChange = (contentWidth, contentHeight) => {
+    this.setState({ screenHeight: contentHeight });
+  };
+
   render() {
+    const scrollEnabled = this.state.screenHeight > height;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, justifyContent: 'flex-start' }}>
         <ScrollView
           style={{ flex: 1 }}
+          scrollEnabled={scrollEnabled}
+          onContentSizeChange={this.onContentSizeChange}
           contentContainerStyle={{ flexGrow: 1}}
           showsVerticalScrollIndicator={false}>
+
           <View style={styles.vacationInfo}>
             <VacationInfo/>
           </View>
@@ -25,6 +37,7 @@ export default class HomeScreen extends Component {
           <View style={styles.vacationType}>
             <VacationType/>
           </View>
+          
         </ScrollView>
       </View>
     )
@@ -36,12 +49,12 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   vacationList: {
     flex: 1,
+    marginRight: 20,
   },
 
   listHeader: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingRight: 50,
   },
 
   vacationInfo: {
@@ -49,7 +62,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  vacationType: { 
-    height: 180,
+  vacationType: {
+    flex: 1,
   },
 })

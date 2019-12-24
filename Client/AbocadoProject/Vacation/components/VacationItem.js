@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   date: {
     flex: 1,
     alignItems: 'center',
-    marginHorizontal: 30,
+    justifyContent: 'space-around',
     paddingBottom: 15,
   },
 
