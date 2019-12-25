@@ -32,12 +32,13 @@ class VacationSerializer(serializers.ModelSerializer):
 class DetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detail
-        fields = ['id', 'day', 'title', 'type_of_detail']
+        fields = ['id', 'day', 'title', 'type_of_detail', 'is_used']
 
     def update(self, instance, validated_data):
         instance.day = validated_data.get('day', instance.day)
         instance.title = validated_data.get('title', instance.title)
         instance.type_of_detail = validated_data.get('type_of_detail', instance.type_of_detail)
+        instance.is_used = validated_data.get('is_used', instance.is_used)
         instance.save()
         return instance
 

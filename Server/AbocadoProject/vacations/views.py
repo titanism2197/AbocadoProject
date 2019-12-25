@@ -72,12 +72,25 @@ class DetailList(APIView):
         serializer = DetailSerializer(details, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None): # + btn -> 새로운 휴가 추가하기
-        vacation = Vacation.objects.get(pk=request.data["vacation"])
-        detail = Detail.objects.create(vacation=vacation)
-        serializer = DetailSerializer(detail)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
+    def post(self, request, format=None): # 디테일 데이터를 vacation과 연결
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class TypeList(APIView):
+
+    def put(self, request, format=None): # 타입 데이터 가져오기
+        _type = Detail.objects.filter(type_of_detail=request.data["type_of_detail"])
+        serializer = DetailSerializer(_type, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None): # 새로운 디테일 추가하기
+        detail = Detail.objects.create()
+        serializer = DetailSerializer(detail, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DetailDetail(APIView):
 
     def get_object(self, pk):

@@ -43,7 +43,7 @@ class Detail(models.Model):
     vacation = models.ForeignKey(Vacation, related_name='detail', on_delete=models.CASCADE)
     day = models.IntegerField(null=True, default=0)
     title = models.CharField(max_length=100, null=True, blank=True)
-    is_used = models.BooleanField(null=True, blank=True)
+    is_used = models.BooleanField(null=True, blank=True, default=False)
     
     def __str__(self):
         return "%s %s : %d 일" %(self.type_of_detail, self.title, self.day)
