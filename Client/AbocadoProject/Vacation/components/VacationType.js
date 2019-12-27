@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Card, Button } from 'react-native-elements'
+import { withNavigation } from 'react-navigation';
 
-export default class VacationType extends Component {
-  constructor(props) {
-    super(props);
-  }
+class VacationType extends Component {
   
-  onPress = (type_of_detail) => {
-    this.props.navigation.navigate('VacationTypeDetail', {type_of_detail: type_of_detail})
+  onPress = () => {
+    this.props.navigation.navigate('Type')
     console.log('works')
   }
 
@@ -17,7 +15,7 @@ export default class VacationType extends Component {
         <View style={styles.container}>
             <View style={styles.column1}>
               <Card containerStyle={styles.card}>
-                <TouchableOpacity onPress={this.onPress("ANN")}>
+                <TouchableOpacity onPress={this.onPress}>
                   <Text style={styles.text}>연가</Text>
                 </TouchableOpacity>
               </Card>
@@ -25,24 +23,24 @@ export default class VacationType extends Component {
             <View style={styles.column2}>
               <View style={styles.row}>
                 <Card containerStyle={styles.card}>
-                  <TouchableOpacity onPress={this.onPress("CON")}>
+                  <TouchableOpacity onPress={this.onPress}>
                     <Text style={styles.text}>위로</Text>
                   </TouchableOpacity>
                 </Card>
                 <Card containerStyle={styles.card}>
-                  <TouchableOpacity onPress={this.onPress("PR")}>
+                  <TouchableOpacity onPress={this.onPress}>
                     <Text style={styles.text}>포상</Text>
                   </TouchableOpacity>
                 </Card>             
               </View>
               <View style={styles.row}>
                 <Card containerStyle={styles.card}>
-                  <TouchableOpacity onPress={this.onPress("RE")}>
+                  <TouchableOpacity onPress={this.onPress}>
                     <Text style={styles.text}>보상</Text>
                   </TouchableOpacity>
                 </Card>
                 <Card containerStyle={styles.card}>
-                  <TouchableOpacity onPress={this.onPress("PE")}>
+                  <TouchableOpacity onPress={this.onPress}>
                     <Text style={styles.text}>청원</Text>
                   </TouchableOpacity>
                 </Card>             
@@ -83,3 +81,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 })
+
+export default withNavigation(VacationType);

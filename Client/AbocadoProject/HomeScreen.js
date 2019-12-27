@@ -37,7 +37,6 @@ export default class HomeScreen extends Component {
           <View style={styles.vacationType}>
             <VacationType/>
           </View>
-          
         </ScrollView>
       </View>
     )
