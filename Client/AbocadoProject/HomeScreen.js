@@ -12,10 +12,13 @@ export default class HomeScreen extends Component {
 
   onContentSizeChange = (contentWidth, contentHeight) => {
     this.setState({ screenHeight: contentHeight });
+    //console.log(contentHeight)
+    //console.log(height)
   };
 
   render() {
-    const scrollEnabled = this.state.screenHeight > height;
+    const scrollEnabled = this.state.screenHeight > (height - 60);
+    //console.log(scrollEnabled)
     return (
       <View style={{ flex: 1, justifyContent: 'flex-start', marginHorizontal: 5 }}>
         <ScrollView

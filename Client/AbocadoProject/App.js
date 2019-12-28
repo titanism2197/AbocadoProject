@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Root from './Router';
+import Root from './NavigationRouter';
 
 
 export default class App extends Component {

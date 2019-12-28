@@ -14,7 +14,11 @@ const VacationStack = createStackNavigator(
     },
 
     {
-    initialRouteName : 'Home',
+      initialRouteName : 'Home',
+      headerMode: 'none',
+      defaultNavigationOptions: {
+          headerVisible: false,
+      }
     }
 );
 
