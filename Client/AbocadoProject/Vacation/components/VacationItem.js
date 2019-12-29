@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { Card, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { withNavigation } from 'react-navigation';
 
-export default class VacationItem extends Component {
+class VacationItem extends Component {
   constructor(props) {
     super(props);
-    this.state  = {
-      expanded: false,
-    }
   }
 
-  _btnPressed = () => {
-    this.setState({
-      expanded: !this.state.expanded
-    })
-  };
+  onPress = () => {
+    this.props.navigation.navigate('Detail', {id : this.props.item.id, dday : this.props.dday})
+  }
 
   render() {
     let dDay = []
@@ -26,7 +22,7 @@ export default class VacationItem extends Component {
     else dDay.push(<Text style={styles.content}>D-{this.props.dday}</Text>)
 
     return (
-        <View>
+        <TouchableOpacity onPress={this.onPress}>
           <Card containerStyle={styles.container} wrapperStyle={{padding:0}}>
             <View style={styles.day}>
               <Text style={styles.content}>{this.props.item.day} 일</Text>
@@ -45,7 +41,7 @@ export default class VacationItem extends Component {
               </View>
             </View>
           </Card>
-        </View>
+        </TouchableOpacity>
     )
   }
 }
@@ -59,7 +55,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 0.3,
     borderColor: 'gray',
-    borderRadius: 15,
     marginRight: 3,
   },
 
@@ -93,3 +88,5 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
 })
+
+export default withNavigation(VacationItem);

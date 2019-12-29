@@ -4,15 +4,16 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import HomeScreen from './HomeScreen';
 import VacationTypeDetail from './Vacation/components/VacationTypeDetail';
+import VacationDetailView from './Vacation/components/VacationDetailView';
 import VacationView from './Vacation/components/VacationView';
 
 
-const VacationStack = createStackNavigator(
+const VacationStack = createSwitchNavigator(
     {
     Home: HomeScreen,
     Type: VacationTypeDetail,
+    Detail: VacationDetailView
     },
-
     {
       initialRouteName : 'Home',
       headerMode: 'none',

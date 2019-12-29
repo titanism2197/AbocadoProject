@@ -62,11 +62,14 @@ const styles = StyleSheet.create({
   vacationInfo: {
     height: 180,
     marginBottom: 20,
-    marginRight: 20,
-    marginLeft: 0,
+    marginRight: 25,
+    marginLeft: 15,
   },
 
   vacationType: {
     flex: 1,
+    marginTop: 20,
+    marginRight: 25,
+    marginLeft: 15,
   },
 })

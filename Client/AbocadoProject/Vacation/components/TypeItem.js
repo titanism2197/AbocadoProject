@@ -10,14 +10,12 @@ export default class TypeItem extends Component {
 
     render() {
         return (
-            <Card containerStyle={styles.container} wrapperStyle={{padding:0}}>
-                <View style={styles.item}>                
-                    <View style={styles.day}>
-                        <Text style={styles.content}>{this.props.item.day}</Text>
-                    </View>
-                    <View style={styles.title}>
-                        <Text style={styles.text}>{this.props.item.title}</Text>
-                    </View>
+            <Card containerStyle={styles.container} wrapperStyle={{padding:0}}>         
+                <View style={styles.day}>
+                  <Text style={styles.content}>{this.props.item.day}</Text>
+                </View>
+                <View style={styles.title}>
+                  <Text style={styles.text}>{this.props.item.title}</Text>
                 </View>
             </Card>
         )
@@ -26,22 +24,17 @@ export default class TypeItem extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 0,
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'space-around',
         backgroundColor: 'white',
         borderWidth: 0.3,
         borderColor: 'gray',
-        borderRadius: 15,
-    },
-    
-    item: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        borderRadius: 5,
     },
 
     day:{
         flex: 1,
+        alignItems: 'center',
     },
 
     content: {
@@ -51,7 +44,6 @@ const styles = StyleSheet.create({
     title: {
         flex: 3,
         alignItems: 'center',
-        justifyContent: 'space-around',
     },
 
     text: {

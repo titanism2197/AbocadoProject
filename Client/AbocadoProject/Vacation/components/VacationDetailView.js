@@ -1,222 +1,126 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { Card } from 'react-native-elements';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Card, Button } from 'react-native-elements'
 
 export default class VacationDetailView extends Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      changedConsolation: [],
-      change : []
-    };
-  }
-
-  /**************************************************************************/
-  /* function which output detail */
-
-  _getAnnual = () => {
-    // Annual TextInput, 값 없으면 에러 안나게.
-    let annual = [];
-    if (this.props.item.annual.length != 0) {
-      annual.push(
-        <TextInput
-          placeholder={this.props.item.annual[0].day + '일'}
-          placeholderTextColor="black"
-          underlineColorAndroid="transparent"
-          style={[styles.textInput, styles.dayInput]}
-          keyboardType={'numeric'}
-        />
-      );
-    } else
-      annual.push(
-        <TextInput
-          placeholder={0 + '일'}
-          placeholderTextColor="black"
-          underlineColorAndroid="transparent"
-          style={[styles.textInput, styles.dayInput]}
-          keyboardType={'numeric'}
-        />
-      );
-
-    return annual;
-  };
-
-  _getConsolation = () => {
-    // consolation TextInput
-    let consolation = [];
-    for (let i = 0; i < this.props.item.consolation.length; i++) {
-      consolation.push(
-        <View style={styles.detailContainer}>
-          <TextInput
-            placeholder={this.props.item.consolation[i].day + '일'}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.dayInput]}
-            keyboardType={'numeric'}
-          />
-          <TextInput
-            placeholder={this.props.item.consolation[i].title}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.titleInput]}
-            onEndEditing={() => {
-              this.state.changedConsolation.push(this.state.change[this.state.change.length-1])
-              console.log(this.state.changedConsolation)
-            }}
-            onChangeText={(text) => {
-              let temp = {
-                title: text,
-              }
-              this.state.change.push(temp)
-            }}
-          />
-        </View>
-      );
+      super(props);
+      this.state  = {
+        loading: false,
+        data: [],
+      }
     }
-    return consolation;
-  };
 
-  _getPrize = () => {
-    // Prize TextInput
-    let prize = [];
-    for (let i = 0; i < this.props.item.prize.length; i++) {
-      prize.push(
-        <View style={styles.detailContainer}>
-          <TextInput
-            placeholder={this.props.item.prize[i].day + '일'}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.dayInput]}
-            keyboardType={'numeric'}
-          />
-          <TextInput
-            placeholder={this.props.item.prize[i].title}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.titleInput]}
-          />
-        </View>
-      );
+    componentDidMount() {
+        this.fetchDataFromApi(this.props.navigation.getParam('id', 'default'));
     }
-    return prize;
-  };
 
-  _getReward = () => {
-    // Prize TextInput
-    let reward = [];
-    for (let i = 0; i < this.props.item.reward.length; i++) {
-      reward.push(
-        <View style={styles.detailContainer}>
-          <TextInput
-            placeholder={this.props.item.reward[i].day + '일'}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.dayInput]}
-            keyboardType={'numeric'}
-          />
-          <TextInput
-            placeholder={this.props.item.reward[i].title}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.titleInput]}
-          />
-        </View>
-      );
-    }
-    return reward;
-  };
+  fetchDataFromApi = (pk)  => {
+    let url = "http://testabocado.ml:8000/vacations/" + pk + "/";
 
-  _getPetition = () => {
-    // Prize TextInput
-    let petition = [];
-    for (let i = 0; i < this.props.item.petition.length; i++) {
-      petition.push(
-        <View style={styles.detailContainer}>
-          <TextInput
-            placeholder={this.props.item.petition[i].day + '일'}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.dayInput]}
-            keyboardType={'numeric'}
-          />
-          <TextInput
-            placeholder={this.props.item.petition[i].title}
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            style={[styles.textInput, styles.titleInput]}
-          />
-        </View>
-      );
-    }
-    return petition;
-  };
+    this.setState({ loading: true });
 
-  /**************************************************************************/
+    fetch(url)
+    .then(res => res.json())
+    .then(res => {
+          this.setState({
+            data: res,
+          });
+          console.log(this.state.data)
+    })
+    .catch((error) => {
+          console.log(error);
+    });
+  };
 
   render() {
+    let dDay = []
+    let dday = this.props.navigation.getParam('dday', 'default')
+    if(dday < 0) {
+      dday = dday * -1
+      dDay.push(<Text style={styles.content}>D+{dday}</Text>)
+    }
+    else dDay.push(<Text style={styles.content}>D-{dday}</Text>)
+
+    let detail = []
+    for(let d=0; d<this.state.data.detail.length; d++) {
+      detail.push(
+        <Card style={{flex: 1, flexDirection: 'column'}}>
+          <Text style={{flex: 1, fontSize: 20}}>{this.state.data.detail[d].day}</Text>
+          <Text style={{flex: 3, fontSize: 17}}>{this.state.data.detail[d].title}</Text>
+        </Card>
+      )
+    }
+
     return (
-      //DetailView flatlist로 구현하기
-      <Card containerStyle={styles.container}>
-        <View style={styles.category}>
-          <Text style={styles.title}>연가</Text>
-          <View>{this._getAnnual()}</View>
+        <View style={{ flex: 1 }}>
+          <Card containerStyle={styles.card} wrapperStyle={{padding:0}}>
+            <View style={styles.day}>
+              <Text style={styles.content}>{this.props.item.day} 일</Text>
+            </View>
+            <View style={styles.dday}>
+              {dDay}
+            </View>
+            <View style={styles.info}>
+              <View style={styles.date}>
+                <Text style={styles.text}>출발</Text>
+                <Text style={styles.text}>{this.props.item.start_date}</Text>
+              </View>
+              <View style={styles.date}>
+                <Text style={styles.text}>복귀</Text>
+                <Text style={styles.text}>{this.props.item.end_date}</Text>
+              </View>
+            </View>
+          </Card>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            { detail }
+          </View>
         </View>
-        <View style={styles.category}>
-          <Text style={styles.title}>위로휴가</Text>
-          <View>{this._getConsolation()}</View>
-        </View>
-        <View style={styles.category}>
-          <Text style={styles.title}>포상휴가</Text>
-          <View>{this._getPrize()}</View>
-        </View>
-        <View style={styles.category}>
-          <Text style={styles.title}>보상휴가</Text>
-          <View>{this._getReward()}</View>
-        </View>
-        <View style={styles.category}>
-          <Text style={styles.title}>청원휴가</Text>
-          <View>{this._getPetition()}</View>
-        </View>
-      </Card>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
+  card: {
+    flex: 1,
+    padding: 0,
+    width: 310,
     flexDirection: 'column',
     justifyContent: 'space-around',
     backgroundColor: 'white',
     borderWidth: 0.3,
     borderColor: 'gray',
-    borderRadius: 15,
-    marginTop: 0,
+    marginRight: 3,
   },
-  category: {
-    marginBottom: 15,
-    borderBottomWidth: 0.3,
-    borderBottomColor: 'gray',
-  },
-  title: {
-    fontSize: 20,
+
+  day:{
+    alignItems: 'center',
     paddingBottom: 10,
   },
-  detailContainer: {
+
+  dday:{
+    alignItems: 'center',
+    paddingBottom: 10,
+  },
+
+  content: {
+    fontSize: 25,
+  },
+
+  info: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
   },
-  textInput: {
-    textAlign: 'center',
-    height: 30,
-    borderRadius: 5,
-    borderWidth: 0.5,
-    borderColor: 'gray',
+    
+  date: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingBottom: 15,
   },
-  dayInput: {
-    width: 40,
+
+  text: {
+    fontSize: 17,
   },
-  titleInput: {
-    width: 250,
-    marginLeft: 10,
-  },
-});
+})
+

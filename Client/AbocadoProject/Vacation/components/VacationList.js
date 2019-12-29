@@ -26,7 +26,7 @@ export default class VacationList extends Component {
           this.setState({
             data: res,
           });
-          console.log(this.state.data)
+          //console.log(this.state.data)
     })
     .catch((error) => {
           console.log(error);
